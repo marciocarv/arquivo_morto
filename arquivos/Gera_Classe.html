@@ -1,0 +1,776 @@
+<html>
+<head><title>Gerador de Classe para PHP</title>
+<script>
+
+	function p(str) { //transforma a primeira letra em maiusca, o p é pra economizar espaço! re re re
+		str1 = str.substring(0,1);
+		str = str.replace(str1, str1.toUpperCase());
+		return str;
+	}
+
+
+	function geraAlterar(form, classe){
+		var corpo = "";
+		for(i=0;i<=form.length-1;i++){
+			corpo += "$paginaT = str_replace(\"#"+form[i].toUpperCase()+"#\", $"+classe+"->get"+p(form[i])+"(), $paginaT);\n\t\t\t";
+		}
+		return corpo;
+	}
+
+	function geraForm(form, classe, tipo){
+		var corpo = "";
+		if(tipo == "cad"){
+			for(i=0;i<=form.length-1;i++){
+				if(i==0){ //nao cria o primeiro campo, que é sempre o id
+				}else{
+					corpo += "<p>\n\t\t";
+					corpo += "<label class=\"labelLogin\">"+p(form[i])+":</label>\n\t\t";
+					corpo += "<input type=\"text\" name=\""+form[i]+"\" id=\""+form[i]+"\" class=\"inputFormMedio\" />\n\t";
+					corpo += "</p>\n\t";
+				}
+			}
+			corpo += "<p>\n\t\t";
+			corpo += "<input type=\"submit\" value=\"Salvar\" class=\"btSubmit\" />\n\t";
+			corpo += "</p>\n\t";
+		}else
+		if(tipo=="alt"){			
+			for(i=0;i<=form.length-1;i++){
+				if(i==0){ 
+					corpo += "<input type=\"hidden\" name=\""+form[i]+"\" value=\"#"+form[i].toUpperCase()+"#\">\n\t";
+				}else{
+					corpo += "<p>\n\t\t";
+					corpo += "<label class=\"labelLogin\">"+p(form[i])+":</label>\n\t\t";
+					corpo += "<input type=\"text\" name=\""+form[i]+"\" id=\""+form[i]+"\" value=\"#"+form[i].toUpperCase()+"#\" class=\"inputFormMedio\" />\n\t";
+					corpo += "</p>\n\t";
+				}
+			}
+			corpo += "<p>\n\t\t";
+			corpo += "<input type=\"submit\" value=\"Salvar\" class=\"btSubmit\" />\n\t";
+			corpo += "</p>\n\t";
+		}
+
+		return corpo;
+	}
+
+
+	function gerarCodigo(){
+		var doc = document;
+		var classe = doc.getElementById('classe').value;
+		var acesso1 = doc.getElementById('acesso1').value;
+		var var1 = doc.getElementById('var1').value;
+		var acesso2 = doc.getElementById('acesso2').value;
+		var var2 = doc.getElementById('var2').value;
+		var acesso3 = doc.getElementById('acesso3').value;
+		var var3 = doc.getElementById('var3').value;
+		var acesso4 = doc.getElementById('acesso4').value;
+		var var4 = doc.getElementById('var4').value;
+		var acesso5 = doc.getElementById('acesso5').value;
+		var var5 = doc.getElementById('var5').value;
+		var acesso6 = doc.getElementById('acesso6').value;
+		var var6 = doc.getElementById('var6').value;
+		var acesso7 = doc.getElementById('acesso7').value;
+		var var7 = doc.getElementById('var7').value;
+		var acesso8 = doc.getElementById('acesso8').value;
+		var var8 = doc.getElementById('var8').value;
+		var acesso9 = doc.getElementById('acesso9').value;
+		var var9 = doc.getElementById('var9').value;
+		var acesso10 = doc.getElementById('acesso10').value;
+		var var10 = doc.getElementById('var10').value;
+		var acesso11 = doc.getElementById('acesso11').value;
+		var var11 = doc.getElementById('var11').value;
+		var acesso12 = doc.getElementById('acesso12').value;
+		var var12 = doc.getElementById('var12').value;
+		var acesso13 = doc.getElementById('acesso13').value;
+		var var13 = doc.getElementById('var13').value;
+		var acesso14 = doc.getElementById('acesso14').value;
+		var var14 = doc.getElementById('var14').value;
+		var acesso15 = doc.getElementById('acesso15').value;
+		var var15 = doc.getElementById('var15').value;
+
+		var func='';
+
+		var corpo = "class "+classe+"{\n\t";
+		var insertCampos='';
+		var valueCampos='';
+		var updateCampos='';
+		var where='';
+		var lista='';
+		var setPost='';
+		var form = new Array();
+		var i = 0;
+
+		if(var1 !=''){
+			corpo = corpo+acesso1+" $"+var1+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var1)+"(){\n\t";
+			func = func+"\treturn $this->"+var1+";\n\t}\n\t";
+			func = func+"function set"+p(var1)+"($"+var1+"){\n\t";
+			func = func+"\t$this->"+var1+" = $"+var1+";\n\t}\n\n";
+
+			where += "where "+ var1+"=\'\".$"+classe+"->get"+p(var1)+"().\"\'\";";
+			valueCampos += "\'\".$"+classe+"->get"+p(var1)+"().\"\'";
+			insertCampos += var1;
+			lista += "$"+classe+"->set"+p(var1)+"($row[\'"+var1+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var1)+"($post[\'"+var1+"\']);\n\t\t";
+
+			form[i] = var1;
+			i++;
+
+		}
+		if(var2!=''){
+			corpo = corpo+acesso2+" $"+var2+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var2)+"(){\n\t";
+			func = func+"\treturn $this->"+var2+";\n\t}\n\t";
+			func = func+"function set"+p(var2)+"($"+var2+"){\n\t";
+			func = func+"\t$this->"+var2+" = $"+var2+";\n\t}\n\n";
+
+			updateCampos += var2+"=\'\".$"+classe+"->get"+p(var2)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var2)+"().\"\'";
+			insertCampos += ", "+var2;
+			lista += "$"+classe+"->set"+p(var2)+"($row[\'"+var2+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var2)+"($post[\'"+var2+"\']);\n\t\t";
+
+			form[i] = var2;
+			i++;
+		}
+		if(var3!=''){
+			corpo = corpo+acesso3+" $"+var3+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var3)+"(){\n\t";
+			func = func+"\treturn $this->"+var3+";\n\t}\n\t";
+			func = func+"function set"+p(var3)+"($"+var3+"){\n\t";
+			func = func+"\t$this->"+var3+" = $"+var3+";\n\t}\n\n";
+
+			updateCampos += ", "+var3+"=\'\".$"+classe+"->get"+p(var3)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var3)+"().\"\'";
+			insertCampos += ", "+var3;
+			lista += "$"+classe+"->set"+p(var3)+"($row[\'"+var3+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var3)+"($post[\'"+var3+"\']);\n\t\t";
+
+			form[i] = var3;
+			i++;
+		}
+		if(var4!=''){
+			corpo = corpo+acesso4+" $"+var4+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var4)+"(){\n\t";
+			func = func+"\treturn $this->"+var4+";\n\t}\n\t";
+			func = func+"function set"+p(var4)+"($"+var4+"){\n\t";
+			func = func+"\t$this->"+var4+" = $"+var4+";\n\t}\n\n";
+
+			updateCampos += ", "+var4+"=\'\".$"+classe+"->get"+p(var4)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var4)+"().\"\'";
+			insertCampos += ", "+var4;
+			lista += "$"+classe+"->set"+p(var4)+"($row[\'"+var4+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var4)+"($post[\'"+var4+"\']);\n\t\t";
+
+			form[i] = var4;
+			i++;
+		}
+		if(var5!=''){
+			corpo = corpo+acesso5+" $"+var5+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var5)+"(){\n\t";
+			func = func+"\treturn $this->"+var5+";\n\t}\n\t";
+			func = func+"function set"+p(var5)+"($"+var5+"){\n\t";
+			func = func+"\t$this->"+var5+" = $"+var5+";\n\t}\n\n";
+
+			updateCampos += ", "+var5+"=\'\".$"+classe+"->get"+p(var5)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var5)+"().\"\'";
+			insertCampos += ", "+var5;
+			lista += "$"+classe+"->set"+p(var5)+"($row[\'"+var5+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var5)+"($post[\'"+var5+"\']);\n\t\t";
+
+			form[i] = var5;
+			i++;
+		}
+		if(var6!=''){
+			corpo = corpo+acesso6+" $"+var6+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var6)+"(){\n\t";
+			func = func+"\treturn $this->"+var6+";\n\t}\n\t";
+			func = func+"function set"+p(var6)+"($"+var6+"){\n\t";
+			func = func+"\t$this->"+var6+" = $"+var6+";\n\t}\n\n";
+
+			updateCampos += ", "+var6+"=\'\".$"+classe+"->get"+p(var6)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var6)+"().\"\'";
+			insertCampos += ", "+var6;
+			lista += "$"+classe+"->set"+p(var6)+"($row[\'"+var6+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var6)+"($post[\'"+var6+"\']);\n\t\t";
+
+			form[i] = var6;
+			i++;
+		}
+		if(var7!=''){
+			corpo = corpo+acesso7+" $"+var7+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var7)+"(){\n\t";
+			func = func+"\treturn $this->"+var7+";\n\t}\n\t";
+			func = func+"function set"+p(var7)+"($"+var7+"){\n\t";
+			func = func+"\t$this->"+var7+" = $"+var7+";\n\t}\n\n";
+
+			updateCampos += ", "+var7+"=\'\".$"+classe+"->get"+p(var7)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var7)+"().\"\'";
+			insertCampos += ", "+var7;
+			lista += "$"+classe+"->set"+p(var7)+"($row[\'"+var7+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var7)+"($post[\'"+var7+"\']);\n\t\t";
+
+			form[i] = var7;
+			i++;
+		}
+		if(var8!=''){
+			corpo = corpo+acesso8+" $"+var8+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var8)+"(){\n\t";
+			func = func+"\treturn $this->"+var8+";\n\t}\n\t";
+			func = func+"function set"+p(var8)+"($"+var8+"){\n\t";
+			func = func+"\t$this->"+var8+" = $"+var8+";\n\t}\n\n";
+
+			updateCampos += ", "+var8+"=\'\".$"+classe+"->get"+p(var8)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var8)+"().\"\'";
+			insertCampos += ", "+var8;
+			lista += "$"+classe+"->set"+p(var8)+"($row[\'"+var8+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var8)+"($post[\'"+var8+"\']);\n\t\t";
+
+			form[i] = var8;
+			i++;
+		}
+		if(var9!=''){
+			corpo = corpo+acesso9+" $"+var9+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var9)+"(){\n\t";
+			func = func+"\treturn $this->"+var9+";\n\t}\n\t";
+			func = func+"function set"+p(var9)+"($"+var9+"){\n\t";
+			func = func+"\t$this->"+var9+" = $"+var9+";\n\t}\n\n";
+
+			updateCampos += ", "+var9+"=\'\".$"+classe+"->get"+p(var9)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var9)+"().\"\'";
+			insertCampos += ", "+var9;
+			lista += "$"+classe+"->set"+p(var9)+"($row[\'"+var9+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var9)+"($post[\'"+var9+"\']);\n\t\t";
+
+			form[i] = var9;
+			i++;
+		}
+		if(var10!=''){
+			corpo = corpo+acesso10+" $"+var10+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var10)+"(){\n\t";
+			func = func+"\treturn $this->"+var10+";\n\t}\n\t";
+			func = func+"function set"+p(var10)+"($"+var10+"){\n\t";
+			func = func+"\t$this->"+var10+" = $"+var10+";\n\t}\n\n";
+
+			updateCampos += ", "+var10+"=\'\".$"+classe+"->get"+p(var10)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var10)+"().\"\'";
+			insertCampos += ", "+var10;
+			lista += "$"+classe+"->set"+p(var10)+"($row[\'"+var10+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var10)+"($post[\'"+var10+"\']);\n\t\t";
+
+			form[i] = var10;
+			i++;
+		}
+		if(var11!=''){
+			corpo = corpo+acesso11+" $"+var11+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var11)+"(){\n\t";
+			func = func+"\treturn $this->"+var11+";\n\t}\n\t";
+			func = func+"function set"+p(var11)+"($"+var11+"){\n\t";
+			func = func+"\t$this->"+var11+" = $"+var11+";\n\t}\n\n";
+
+			updateCampos += ", "+var11+"=\'\".$"+classe+"->get"+p(var11)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var11)+"().\"\'";
+			insertCampos += ", "+var11;
+			lista += "$"+classe+"->set"+p(var11)+"($row[\'"+var11+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var11)+"($post[\'"+var11+"\']);\n\t\t";
+
+			form[i] = var11;
+			i++;
+		}
+		if(var12!=''){
+			corpo = corpo+acesso12+" $"+var12+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var12)+"(){\n\t";
+			func = func+"\treturn $this->"+var12+";\n\t}\n\t";
+			func = func+"function set"+p(var12)+"($"+var12+"){\n\t";
+			func = func+"\t$this->"+var12+" = $"+var12+";\n\t}\n\n";
+
+			updateCampos += ", "+var12+"=\'\".$"+classe+"->get"+p(var12)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var12)+"().\"\'";
+			insertCampos += ", "+var12;
+			lista += "$"+classe+"->set"+p(var12)+"($row[\'"+var12+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var12)+"($post[\'"+var12+"\']);\n\t\t";
+
+			form[i] = var12;
+			i++;
+		}
+		if(var13!=''){
+			corpo = corpo+acesso13+" $"+var13+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var13)+"(){\n\t";
+			func = func+"\treturn $this->"+var13+";\n\t}\n\t";
+			func = func+"function set"+p(var13)+"($"+var13+"){\n\t";
+			func = func+"\t$this->"+var13+" = $"+var13+";\n\t}\n\n";
+
+			updateCampos += ", "+var13+"=\'\".$"+classe+"->get"+p(var13)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var13)+"().\"\'";
+			insertCampos += ", "+var13;
+			lista += "$"+classe+"->set"+p(var13)+"($row[\'"+var13+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var13)+"($post[\'"+var13+"\']);\n\t\t";
+
+			form[i] = var13;
+			i++;
+		}
+		if(var14!=''){
+			corpo = corpo+acesso14+" $"+var14+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var14)+"(){\n\t";
+			func = func+"\treturn $this->"+var14+";\n\t}\n\t";
+			func = func+"function set"+p(var14)+"($"+var14+"){\n\t";
+			func = func+"\t$this->"+var14+" = $"+var14+";\n\t}\n\n";
+
+			updateCampos += ", "+var14+"=\'\".$"+classe+"->get"+p(var14)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var14)+"().\"\'";
+			insertCampos += ", "+var14;
+			lista += "$"+classe+"->set"+p(var14)+"($row[\'"+var14+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var14)+"($post[\'"+var14+"\']);\n\t\t";
+
+			form[i] = var14;
+			i++;
+		}
+		if(var15!=''){
+			corpo = corpo+acesso15+" $"+var15+";\n\t";
+
+			func = func+"\n\tfunction get"+p(var15)+"(){\n\t";
+			func = func+"\treturn $this->"+var15+";\n\t}\n\t";
+			func = func+"function set"+p(var15)+"($"+var15+"){\n\t";
+			func = func+"\t$this->"+var15+" = $"+var15+";\n\t}\n\n";
+
+			updateCampos += ", "+var15+"=\'\".$"+classe+"->get"+p(var15)+"().\"\'";
+			valueCampos += ", \'\".$"+classe+"->get"+p(var15)+"().\"\'";
+			insertCampos += ", "+var15;
+			lista += "$"+classe+"->set"+p(var15)+"($row[\'"+var15+"\']);\n\t\t\t";
+			setPost += "$"+classe+"->set"+p(var15)+"($post[\'"+var15+"\']);\n\t\t";
+
+			form[i] = var15;
+			i++;
+		}
+		
+
+		corpo = "<?php\n\n"+corpo+func+"\r}\n?>";
+		
+		doc.getElementById('modelo').value = corpo; //joga para dentro da textarea
+
+
+		/****************************** Cria o controlador **********************************************/
+
+		var corpoController = "<?php\n\nclass "+classe+"Controle extends controle{\n\n\t";
+		corpoController += "function inserir($"+classe+"){\n\t\t";
+		corpoController += "$dao"+p(classe)+" = new dao"+p(classe)+"();\n\n\t\t";
+		corpoController += "if($dao"+p(classe)+"->confere"+p(classe)+"($"+classe+")==false){\n\t\t\t";
+		corpoController += "if($dao"+p(classe)+"->inserir($"+classe+")==true){\n\t\t\t\t";
+		corpoController += "return \"sucesso\";\n\t\t\t";
+		corpoController += "}else{\n\t\t\t\t";
+		corpoController += "return \"erro\";\n\t\t\t}\n\t\t";
+		corpoController += "}else{\n\t\t\t";
+		corpoController += "return \"cadastrado\";\n\t\t}\n\t}\n\n\t";
+
+		corpoController += "\/**\n\tfuncao alterar: obj= objeto a ser alterado, sc=0 (somente o campo) indica se tiver campo vazio, ele fica como null. sc=1 ignora os campos vazios, criando só o campo a ser alterado 	*\/\n\n\t";
+		corpoController += "function alterar($"+classe+",$sc=0){\n\t\t";
+		corpoController += "$dao"+p(classe)+" = new dao"+p(classe)+"();\n\n\t\t";
+		corpoController += "if($dao"+p(classe)+"->alterar($"+classe+", $sc)==true){\n\t\t\t";
+		corpoController += "return \"sucesso\";\n\t\t";
+		corpoController += "}else{\n\t\t\t";
+		corpoController += "return \"nenhumC\";\n\t\t}\n\t";
+		corpoController += "}\n\n\t";
+
+		corpoController += "function excluir($"+classe+"){\n\t\t";
+		corpoController += "$dao"+p(classe)+" = new dao"+p(classe)+"();\n\n\t\t";
+		corpoController += "if($dao"+p(classe)+"->excluir($"+classe+")==true){\n\t\t\t";
+		corpoController += "return \"sucesso\";\n\t\t";
+		corpoController += "}else{\n\t\t\t";
+		corpoController += "return \"erro\";\n\t\t}\n\t";
+		corpoController += "}\n\n\t";
+
+		corpoController += "function listar(){\n\t\t";
+		corpoController += "$dao"+p(classe)+" = new dao"+p(classe)+"();\n\n\t\t";
+		corpoController += "$lista = $dao"+p(classe)+"->listar();\n\n\t\t";
+		corpoController += "return $lista;\n\t}\n\n\t";	
+
+		corpoController += "function listaPorId($id){\n\t\t";
+		corpoController += "$dao"+p(classe)+" = new dao"+p(classe)+"();\n\n\t\t";
+		corpoController += "$resultado = $dao"+p(classe)+"->listaPorId($id);\n\n\t\t";
+		corpoController += "return $resultado;\n\t}\n\n\t";	
+
+		corpoController += "function combo($id=null){\n\t\t";
+		corpoController += "$dao"+p(classe)+" = new dao"+p(classe)+"();\n\n\t\t";
+		corpoController += "$lista = $dao"+p(classe)+"->listar();\n\n\t\t";
+		corpoController += "$combo = \"<select name=\\\""+var1+"\\\" class=\\\"select\\\">\\n\";\n\n\t\t";	
+		corpoController += "$combo .= \"<option value=\\\"\\\"></option>\\n\";\n\n\t\t";	
+		corpoController += "for($i=0;$i<=sizeof($lista)-1;$i++){\n\t\t\t";
+		corpoController += "$p = $lista[$i];\n\t\t\t";	
+		corpoController += "if($p->get"+p(var1)+"()==$id){\n\t\t\t\t";
+		corpoController += "$combo .= \"<option value=\\\"\".$p->get"+p(var1)+"().\"\\\" selected=\\\"selected\\\">\".$p->get"+p(var2)+"().\"</option>\\n\";\n\t\t\t";	
+		corpoController += "}else{\n\t\t\t\t";
+		corpoController += "$combo .= \"<option value=\\\"\".$p->get"+p(var1)+"().\"\\\">\".$p->get"+p(var2)+"().\"</option>\\n\";\n\t\t\t";
+		corpoController += "}\n\t\t}\n\t\t";
+		corpoController += "$combo .= \"</select>\\n\";\n\n\t\t";
+		corpoController += "return $combo;\n\t}\n\n\t";
+
+		corpoController += "function setPost($post){\n\t\t";
+		corpoController += "$util = new util();\n\n\t\t";
+		corpoController += "$"+classe+" = new "+classe+"();\n\n\t\t"+setPost+"\n\t\t";
+		corpoController += "return $"+classe+";\n\t}\n\n\t";	
+
+		corpoController += "function popularTable($lista){ \n\t\t";
+		corpoController += "$util = new util();\n\n\t\t";
+		corpoController += "$corpo = \"\";\n\t\t";
+		corpoController += "foreach($lista as $obj){\n\t\t\t";
+		corpoController += "$corpo .= \"<tr>\";\n\t\t\t";	
+		corpoController += "$corpo .= \"<td>\".$obj->get"+p(var2)+"().\"</td>\";\n\t\t\t";	
+		corpoController += "$corpo .= \"<td><a href=?acao="+classe+"Action&pg=Alterar&id=\".$obj->get"+p(var1)+"().\"><img src=\\\"images/v.gif\\\" alt=\\\"Alterar\\\" title=\\\"Alterar\\\"></a></td>\";\n\t\t\t";	
+		corpoController += "$corpo .= \"<td><a href=?acao="+classe+"Action&pg=Excluir&id=\".$obj->get"+p(var1)+"().\" onclick=\\\"if(!confirm(\'Deseja realmente excluir ??\')) return false;\\\"><img src=\\\"images/x.gif\\\" alt=\\\"Excluir\\\" title=\\\"Excluir\\\"></a></td>\";\n\t\t\t";	
+		corpoController += "$corpo .= \"</tr>\";\n\t\t}\n\t\t";	
+		corpoController += "return $corpo;\n\t}\n\}\n\?>";	
+
+
+		doc.getElementById('controlador').value = corpoController;
+
+		
+
+		/****************************** Cria o Dao **********************************************/
+
+		var dao='';
+		var corpoDao = "<?php\n\nclass dao"+p(classe)+" extends Dao{\n\t";
+		corpoDao += "private $conexao;\n\n\t";
+		corpoDao += "function __construct(){\n\t\t";
+		corpoDao += "$this->conexao = new conexao();\n\t\t$this->conexao->conectar();\n\t}\n\n\t";
+		
+		corpoDao += "function listar(){\n\t\t";
+		corpoDao += "$sql = \"select * from "+classe+" order by "+var2+" asc\";";
+		corpoDao += "\n\t\t$r = mysql_query($sql)\;\n\n\t\t";
+		corpoDao += "while($row = mysql_fetch_array($r)){\n\n\t\t\t";
+		corpoDao += "$"+classe+" = new "+classe+"();\n\n\t\t\t";
+		corpoDao += lista;
+		corpoDao += "\n\t\t\t$lista[] = $"+classe+";\n\t\t}\n\t\treturn $lista;\n\t}\n\n\t";
+
+		corpoDao += "function listaPorId($id){\n\t\t";
+		corpoDao += "$sql = \"select * from "+classe+" where "+var1+" = {$id}\";";
+		corpoDao += "\n\t\t$r = mysql_query($sql)\;\n\n\t\t";
+		corpoDao += "$row = mysql_fetch_array($r);\n\n\t\t";
+		corpoDao += "$"+classe+" = new "+classe+"();\n\n\t\t"+lista;
+		corpoDao += "return $"+classe;
+		corpoDao += ";\n\t}\n\n\t";
+
+		corpoDao += "function confere"+p(classe)+"($"+classe+"){\n\t\t";
+		corpoDao += "$sql = \"select * from "+classe+" where "+var2+" = '\".$"+classe+"->get"+p(var2)+"().\"'\";";
+		corpoDao += "\n\t\t$r = mysql_num_rows(mysql_query($sql));\n\n\t\t";
+		corpoDao += "if($r >= 1){\n\t\t\t";
+		corpoDao += "return true;\n\t\t";
+		corpoDao += "}else{\n\t\t\t";
+		corpoDao += "return false;\n\t\t";
+		corpoDao += "}\n\t}\n";	
+		corpoDao += "}\n?>";
+
+
+		doc.getElementById('dao').value = corpoDao; //joga para dentro da textarea
+
+		/****************************** Cria o action **********************************************/
+
+		var corpoAction = "<?php\n\nclass "+classe+"Action{\n\t";
+		corpoAction += "private $"+classe+"C;\n\n\t";
+		corpoAction += "function __construct(){\n\t\t";
+		corpoAction += "$this->"+classe+"C = new "+classe+"Controle();\n\t}\n\n\n\t";
+
+		corpoAction += "function show(){\n\t\t";
+		corpoAction += "switch($_GET['pg']){\n\t\t\t";
+		corpoAction += "case 'Cadastrar':\n\t\t\t\t";
+		corpoAction += "$this->cadastrar();\n\t\t\t\t";
+		corpoAction += "break;\n\t\t\t";
+		corpoAction += "case 'Excluir':\n\t\t\t\t";
+		corpoAction += "$this->excluir();\n\t\t\t\t";
+		corpoAction += "break;\n\t\t\t";
+		corpoAction += "case 'Listar':\n\t\t\t\t";
+		corpoAction += "$this->listar();\n\t\t\t\t";
+		corpoAction += "break;\n\t\t\t";
+		corpoAction += "case 'Alterar':\n\t\t\t\t";
+		corpoAction += "$this->alterar();\n\t\t\t\t";
+		corpoAction += "break;\n\t\t\t";
+		corpoAction += "default:\n\t\t\t\t";
+		corpoAction += "$this->index();\n\t\t\t\t";
+		corpoAction += "break;\n\t\t";
+		corpoAction += "}\n\t}\n\n\n\t";
+		
+		corpoAction += "function index(){\n\n\t\t";
+		corpoAction += "$paginaT = file_get_contents(\"visao/ger"+p(classe)+".php\");\n\n\t\t";
+		corpoAction += "$paginaT = str_replace(\"#TITULO#\", \"Gerenciar "+p(classe)+"\", $paginaT);\n\t\t";
+		corpoAction += "$paginaT = str_replace(\"#USUARIO#\", $_SESSION['nome'], $paginaT);\n\n\t\t";
+		corpoAction += "$this->"+classe+"C->redirecionar($paginaT);	\n\t}\n\n\n\t";	
+		
+		corpoAction += "function cadastrar(){\n\n\t\t";		
+		corpoAction += "if(!(empty($_POST['"+var2+"']) || empty($_POST['"+var3+"']) )){\n\n\t\t\t";
+		corpoAction += "$"+classe+" = new "+classe+"();\n\n\t\t\t";
+		corpoAction += "$"+classe+" = $this->"+classe+"C->setPost($_POST);\n\n\t\t\t";
+		corpoAction += "/**\n\t\t\t\tchaves estrangeiras\n\t\t\t\tex: $obj->setId_fk($_SESSION['id_fk']);\n\t\t\t*/\n\n\t\t\t";
+		corpoAction += "$resposta = $this->"+classe+"C->inserir($"+classe+");\n\n\t\t\t";
+		corpoAction += "$paginaT = file_get_contents(\"visao/cad"+p(classe)+".php\");\n\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#MENSAGEM#\", $this->"+classe+"C->erro($resposta), $paginaT);\n\n\t\t\t";
+		corpoAction += "/**\n\t\t\t\tchaves estrangeiras\n\t\t\t\tex: $paginaT = str_replace(\"#CAMPOFK#\", $objFK->combo(), $paginaT);\n\t\t\t*/\n\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#TITULO#\", \"Cadastrar "+p(classe)+"\", $paginaT);\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#USUARIO#\", $_SESSION['nome'], $paginaT);\n\n\t\t";
+		corpoAction += "}else{\n\n\t\t\t";
+		corpoAction += "$paginaT = file_get_contents(\"visao/cad"+p(classe)+".php\");\n\n\t\t\t";
+		corpoAction += "if($_GET['flag']==1){\n\n\t\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#MENSAGEM#\", $this->"+classe+"C->erro(\"vazio\"), $paginaT);\n\t\t\t}\n\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#MENSAGEM#\", $this->"+classe+"C->erro(), $paginaT);\n\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#TITULO#\", \"Cadastrar "+p(classe)+"\", $paginaT);\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#USUARIO#\", $_SESSION['nome'], $paginaT);\n\n\t\t";
+		corpoAction += "}\n\n\t\t";
+		corpoAction += "$this->"+classe+"C->redirecionar($paginaT);	\n\t}\n\n\n\t";				
+
+		corpoAction += "function listar(){\n\n\t\t";		
+		corpoAction += "$lista = $this->"+classe+"C->listar();\n\n\t\t";
+		corpoAction += "$paginacao = new paginacao();\n\n\t\t";
+		corpoAction += "$paginacao->setTamanhoPagina(10);\n\t\t";
+		corpoAction += "$lista = $paginacao->paginar($lista);\n\n\t\t";		
+		corpoAction += "$paginaT = file_get_contents(\"visao/lista"+p(classe)+".php\");\n\n\t\t";
+		corpoAction += "$paginaT = str_replace(\"#MENSAGEM#\", $this->"+classe+"C->erro(), $paginaT);\n\n\t\t";		
+		corpoAction += "$paginaT = str_replace(\"#BARRA#\", $paginacao->barra(), $paginaT);\n\n\t\t";
+		corpoAction += "$paginaT = str_replace(\"#TABELA#\", $this->"+classe+"C->popularTable($lista), $paginaT);\n\n\t\t";
+		corpoAction += "$paginaT = str_replace(\"#TITULO#\", \"Listar "+p(classe)+"\", $paginaT);\n\t\t";
+		corpoAction += "$paginaT = str_replace(\"#USUARIO#\", $_SESSION['nome'], $paginaT);\n\n\t\t";
+		corpoAction += "$this->"+classe+"C->redirecionar($paginaT);	\n\t}\n\n\n\t";		
+		
+
+		corpoAction += "function alterar(){\n\n\t\t";		
+		corpoAction += "if(!(empty($_POST['"+var2+"']) || empty($_POST['"+var3+"']) )){\n\n\t\t\t";
+		corpoAction += "$"+classe+" = new "+classe+"();\n\n\t\t\t";
+		corpoAction += "$"+classe+" = $this->"+classe+"C->setPost($_POST);\n\n\t\t\t";		
+		corpoAction += "$resposta = $this->"+classe+"C->alterar($"+classe+",0);\n\n\t\t\t";
+		corpoAction += "$"+classe+" = $this->"+classe+"C->listaPorId($_POST['"+var1+"']);\n\n\t\t\t";
+		corpoAction += "$paginaT = file_get_contents(\"visao/alt"+p(classe)+".php\");\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#MENSAGEM#\", $this->"+classe+"C->erro($resposta), $paginaT);\n\n\t\t\t";
+		corpoAction += geraAlterar(form, classe); /* Gera os campos do form que serao substituidos*/
+		corpoAction += "\n\t\t\t";	
+		corpoAction += "$paginaT = str_replace(\"#TITULO#\", \"Alterar "+p(classe)+"\", $paginaT);\n\t\t\t";		
+		corpoAction += "$paginaT = str_replace(\"#USUARIO#\", $_SESSION['nome'], $paginaT);\n\n\t\t";
+		corpoAction += "}else{\n\n\t\t\t";
+		corpoAction += "$"+classe+" = $this->"+classe+"C->listaPorId($_GET['id']);\n\n\t\t\t";
+		corpoAction += "$paginaT = file_get_contents(\"visao/alt"+p(classe)+".php\");\n\n\t\t\t";		
+		corpoAction += "$paginaT = str_replace(\"#MENSAGEM#\", $this->"+classe+"C->erro(), $paginaT);\n\n\t\t\t";
+		corpoAction += geraAlterar(form, classe);/* Gera os campos do form que serao substituidos*/
+		corpoAction += "\n\t\t\t";	
+		corpoAction += "$paginaT = str_replace(\"#TITULO#\", \"Alterar "+p(classe)+"\", $paginaT);\n\t\t\t";
+		corpoAction += "$paginaT = str_replace(\"#USUARIO#\", $_SESSION['nome'], $paginaT);\n\n\t\t";
+		corpoAction += "}\n\n\t\t";
+		corpoAction += "$this->"+classe+"C->redirecionar($paginaT);	\n\t}\n\n\n\t";		
+
+		corpoAction += "function excluir(){\n\n\t\t";
+		corpoAction += "$"+classe+" = $this->"+classe+"C->listaPorId($_GET['id']);\n\t\t";		
+		corpoAction += "$this->"+classe+"C->excluir($"+classe+");\n\t\t";		
+		corpoAction += "$this->"+classe+"C->redirecionarUrl(\"?acao="+classe+"Action&pg=Listar\");\n\t";
+		corpoAction += "}\n}\n?>";
+
+		doc.getElementById('action').value = corpoAction; //joga para dentro da textarea
+
+
+		/****************************** Cria o Form de cadastro **********************************************/
+
+		var corpoFormC = "<form name=\"cad"+p(classe)+"\" id=\"cad"+p(classe)+"\" method=\"post\" action=\"?acao="+classe+"Action&amp;pg=Cadastrar&amp;flag=1\">\n\t";
+		corpoFormC += geraForm(form, classe, "cad");
+		corpoFormC += "\r";
+		corpoFormC += "</form>\n";
+		corpoFormC += "<script type=\"text/javascript\">\n\t";
+		corpoFormC += "cleanValidator.init({\n\t\t";
+		corpoFormC += "formId: 'cad"+p(classe)+"',\n\t\t";
+		corpoFormC += "inputColors: ['', ''],\n\t\t";
+		corpoFormC += "errorColors: ['#FFFF99', '#CF3339'],\n\t\t";
+		corpoFormC += "isRequired: ['"+form[1]+"','"+form[2]+"'],\n\t\t";
+		corpoFormC += "isEmail: [''],\n\t\t";
+		corpoFormC += "isNumeric: ['']\n\t";
+		corpoFormC += "});\n";
+		corpoFormC += "<\/script>";
+
+		doc.getElementById('formCad').value = corpoFormC; //joga para dentro da textarea
+
+
+		/****************************** Cria o Form de alteracao **********************************************/
+
+		var corpoFormA = "<form name=\"alt"+p(classe)+"\" id=\"alt"+p(classe)+"\" method=\"post\" action=\"?acao="+classe+"Action&amp;pg=Alterar&amp;id=#"+form[0].toUpperCase()+"# \">\n\t";
+		corpoFormA += geraForm(form, classe, "alt");
+		corpoFormA += "\r";
+		corpoFormA += "</form>\n";
+		corpoFormA += "<script type=\"text/javascript\">\n\t";
+		corpoFormA += "cleanValidator.init({\n\t\t";
+		corpoFormA += "formId: 'alt"+p(classe)+"',\n\t\t";
+		corpoFormA += "inputColors: ['', ''],\n\t\t";
+		corpoFormA += "errorColors: ['#FFFF99', '#CF3339'],\n\t\t";
+		corpoFormA += "isRequired: ['"+form[1]+"','"+form[2]+"'],\n\t\t";
+		corpoFormA += "isEmail: [''],\n\t\t";
+		corpoFormA += "isNumeric: ['']\n\t";
+		corpoFormA += "});\n";
+		corpoFormA += "<\/script>";
+
+		doc.getElementById('formAlt').value = corpoFormA; //joga para dentro da textarea
+	}
+
+
+
+</script>
+</head>
+<body>
+	<form name="q1">
+		Nome da classe: <input type="text" name="classe" id="classe"><br />
+		Variaveis<br />
+		Acesso: <select name="acesso" id="acesso1">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var1" id="var1">
+		<!--Tipo: <select name="tipo1" id="tipo1">
+					<option value="text">text</option>
+					<option value="select">select</option>
+				</select>--><br />
+
+		Acesso: <select name="acesso" id="acesso2">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var2" id="var2"><br />
+
+		Acesso: <select name="acesso" id="acesso3">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var3" id="var3"><br />
+
+		Acesso: <select name="acesso" id="acesso4">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var4" id="var4"><br />
+
+		Acesso: <select name="acesso" id="acesso5">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var5" id="var5"><br />
+
+		Acesso: <select name="acesso" id="acesso6">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var6" id="var6"><br />
+
+		Acesso: <select name="acesso" id="acesso7">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var7" id="var7"><br />
+
+		Acesso: <select name="acesso" id="acesso8">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var8" id="var8"><br />
+
+		Acesso: <select name="acesso" id="acesso9">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var9" id="var9"><br />
+
+		Acesso: <select name="acesso" id="acesso10">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var10" id="var10"><br />
+
+		Acesso: <select name="acesso" id="acesso11">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var11" id="var11"><br />
+
+		Acesso: <select name="acesso" id="acesso12">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var12" id="var12"><br />
+
+		Acesso: <select name="acesso" id="acesso13">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var13" id="var13"><br />
+
+		Acesso: <select name="acesso" id="acesso14">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var14" id="var14"><br />
+
+		Acesso: <select name="acesso" id="acesso15">
+					<option value="">default</option>
+					<option value="public">public</option>
+					<option value="private">private</option>
+					<option value="protected">protected</option>
+				</select>
+		Variavel: <input type="text" name="var15" id="var15"><br /><br />
+
+		<input type="Button" Value="Refactory" onClick="gerarCodigo();">
+		<hr>
+		Modelo: <br/>
+		<textarea id="modelo" rows="20" cols="70" readonly></textarea>
+
+		<hr>
+		Action: <br/>
+		<textarea id="action" rows="20" cols="150" readonly></textarea>
+
+		<hr>
+		Controlador: <br/>
+		<textarea id="controlador" rows="20" cols="150" readonly></textarea>
+
+		<hr>
+		Dao: <br/>
+		<textarea id="dao" rows="20" cols="150" readonly></textarea>		
+
+		<hr>
+		Form Cadastro: <br/>
+		<textarea id="formCad" rows="20" cols="150" readonly></textarea>	
+
+		<hr>
+		Form Alteracao: <br/>
+		<textarea id="formAlt" rows="20" cols="150" readonly></textarea>	
+
+	</form>
+</body>
+</html>
